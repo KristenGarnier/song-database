@@ -1,7 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser')
 var AWS = require('aws-sdk');
-AWS.config.update({region: 'eu-west-1'});
+AWS.config.update({region: 'us-west-2'});
 var docClient = new AWS.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
 var app = express();
 app.use(bodyParser)

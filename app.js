@@ -1,6 +1,7 @@
 var express = require('express');
 var AWS = require('aws-sdk');
-var docClient = new AWS.DynamoDb.DocumentClient({region: 'eu-west-1'});
+AWS.config.update({region: 'eu-west-1'});
+var docClient = new AWS.DynamoDB.DocumentClient({apiVersion: '2012-08-10'});
 var app = express();
 
 app.get('/', function(req, res) {
@@ -11,14 +12,20 @@ app.get('/', function(req, res) {
 
 app.post('/', function(req, res) {
   docClient.put({
-      artiste: req.body.artist,
-      song: req.body.song
+      TableName: 'song',
+      Item: {
+          'itemId': 0,
+          'song': req.body.song,
+          'artist': req.body.artist
+      }
   }, function(err, data) {
     if(err) {
+        console.log('Error !')
         res.send({
             "error": err
         });
     } else {
+        console.log('Success !')
         res.send(data);
     }
   })

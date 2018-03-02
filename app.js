@@ -1,4 +1,6 @@
 var express = require('express');
+var AWS = require('aws-sdk');
+var docClient = new AWS.DynamoDb.DocumentClient({region: 'eu-west-1'});
 var app = express();
 
 app.get('/', function(req, res) {
@@ -8,9 +10,19 @@ app.get('/', function(req, res) {
 });
 
 app.post('/', function(req, res) {
-  res.send({
-    "Output": "Hello World!"
-  });
+  docClient.put({
+      artiste: req.body.artist,
+      song: req.body.song
+  }, function(err, data) {
+    if(err) {
+        res.send({
+            "error": err
+        });
+    } else {
+        res.send(data);
+    }
+  })
+
 });
 
 
